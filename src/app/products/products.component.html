@@ -1,0 +1,56 @@
+<div class="spinner_overlay" *ngIf="isLoading">
+   <div class="loader">
+   </div>
+</div>
+
+<div class="filter">
+   <div>
+      Sort By &nbsp;
+   </div>
+   <div class="selectWrapper">
+      <select [(ngModel)]="sortBy" placeholder="Select" (ngModelChange)="onSortOptionChange($event)">
+         <option value="" disabled selected>Select</option>
+         <option *ngFor="let option of shortByOptions" [value]="option.value">{{option.name}}</option>
+      </select>
+   </div>
+   <button class="button-clear" [disabled]="!sortBy" style="margin-left: 5px;" (click)="onClearSorting()">Clear</button>
+</div>
+
+<div class="products-container">
+   <ngx-datatable #myTable 
+      class="material product-scrolling" 
+      [rows]="rows" [columnMode]="ColumnMode.force"
+      [headerHeight]="headerHeight" 
+      [rowHeight]="rowHeight"
+      [scrollbarV]="true" 
+      (scroll)="scrollHandler($event.offsetY)">
+      <ngx-datatable-column [resizeable]="false" [sortable]="true" [draggable]="true" [canAutoResize]="true" name="Id"
+         prop="id">
+         <ng-template let-row="row" ngx-datatable-cell-template>
+            <span> {{ row.id ? row.id : '-' }}</span>
+         </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [resizeable]="false" [sortable]="true" [draggable]="true" [canAutoResize]="true" name="Size"
+         prop="size">
+         <ng-template let-row="row" ngx-datatable-cell-template>
+            <span> {{ row.size ? row.size : '-' }}</span>
+         </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [resizeable]="false" [sortable]="true" [draggable]="true" [canAutoResize]="true"
+         name="Price" prop="price">
+         <ng-template let-row="row" ngx-datatable-cell-template>
+            <span> {{ row.price ? (row.price / 100 | currency:'USD') : '-' }}</span>
+         </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [resizeable]="false" [draggable]="true" [canAutoResize]="true" name="Face" prop="face">
+         <ng-template let-row="row" ngx-datatable-cell-template>
+            <div [ngStyle]="{'font-size': row.size + 'px'}"> {{ row.face ? row.face : '-' }}</div>
+         </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [resizeable]="false" [draggable]="true" [canAutoResize]="true" name="Date" prop="date">
+         <ng-template let-row="row" ngx-datatable-cell-template>
+            <span> {{ row.date ? (row.date | dateAgo ) : '-' }}</span>
+         </ng-template>
+      </ngx-datatable-column>
+   </ngx-datatable>
+</div>
